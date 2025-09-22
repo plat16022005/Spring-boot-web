@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">LTWEB</title>
+<link th:href="@{/css/site.css}" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+	<header th:replace="layout/_fragments :: header"></header>
+
+	<main class="container my-4" layout:fragment="content">
+		<!-- Nội dung trang con -->
+	</main>
+
+	<footer th:replace="layout/_fragments :: footer"
+		class="mt-auto bg-white border-top"></footer>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

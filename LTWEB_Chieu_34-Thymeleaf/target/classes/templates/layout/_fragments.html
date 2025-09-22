@@ -1,0 +1,18 @@
+<!-- src/main/resources/templates/layout/_fragments.html -->
+<div th:fragment="header">
+    <div class="container py-3 d-flex align-items-center gap-3">
+        <img th:src="@{/images/profile.jpg}" alt="me" width="56" height="56"
+             class="rounded-circle border">
+        <div>
+            <h1 class="h4 mb-0">Category Manager</h1>
+            <small class="text-muted">Spring Boot + Thymeleaf Layout</small>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="footer">
+    <div class="container py-3 text-center small text-muted">
+        <div><strong>Sinh viên thực hiện:</strong> Phạm Lê Anh Tuấn - 23110356 - 231101A</div>
+        <div>© 2025 - Học phần Lập trình Web</div>
+    </div>
+</div>

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,4 +44,10 @@ public class CategoryServiceImpl implements CategoryService {
 	public void deleteById(Long id) {
 		repo.deleteById(id);
 	}
+
+
+    @Override
+    public List<Category> findAll() {   // ✅ thêm hàm này
+        return repo.findAll();
+    }
 }

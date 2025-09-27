@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Danh sách Video</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+
+	<h2>Danh sách Video</h2>
+
+	<form class="mb-3" method="get" th:action="@{/videos}">
+		<input type="text" class="form-control" name="q" th:value="${q}"
+			placeholder="Tìm kiếm...">
+	</form>
+
+	<a class="btn btn-primary mb-3" th:href="@{/videos/create}">➕ Thêm
+		Video</a>
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Tiêu đề</th>
+				<th>Mô tả</th>
+				<th>Danh mục</th>
+				<th>Trạng thái</th>
+				<th>Hành động</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="v : ${pageData}">
+				<td th:text="${v.id}"></td>
+				<td th:text="${v.title}"></td>
+				<td th:text="${v.description}"></td>
+				<td th:text="${v.category != null ? v.category.name : '---'}"></td>
+				<td><span th:text="${v.active} ? 'Hiển thị' : 'Ẩn'"></span></td>
+				<td><a class="btn btn-sm btn-warning"
+					th:href="@{'/videos/' + ${v.id} + '/edit'}">✏ Sửa</a>
+					<form th:action="@{'/videos/' + ${v.id} + '/delete'}" method="post"
+						style="display: inline">
+						<button type="submit" class="btn btn-sm btn-danger">🗑
+							Xóa</button>
+					</form></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- PHÂN TRANG -->
+	<nav>
+		<ul class="pagination">
+			<li th:classappend="${pageData.hasPrevious()} ? '' : 'disabled'"
+				class="page-item"><a class="page-link"
+				th:href="@{/videos(page=${pageData.number - 1}, q=${q})}">Trước</a>
+			</li>
+			<li th:each="i : ${#numbers.sequence(0, pageData.totalPages - 1)}"
+				th:classappend="${i == pageData.number} ? 'active'"
+				class="page-item"><a class="page-link"
+				th:href="@{/videos(page=${i}, q=${q})}" th:text="${i + 1}"></a></li>
+			<li th:classappend="${pageData.hasNext()} ? '' : 'disabled'"
+				class="page-item"><a class="page-link"
+				th:href="@{/videos(page=${pageData.number + 1}, q=${q})}">Sau</a></li>
+		</ul>
+	</nav>
+
+</body>
+</html>

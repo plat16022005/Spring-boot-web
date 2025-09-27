@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Trang quản trị</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container mt-4">
+        <h2>Chào mừng bạn đến với trang quản trị!</h2>
+        <p>Đăng nhập thành công với quyền ADMIN.</p>
+        <a class="btn btn-primary" th:href="@{/categories}">Quản lý Category</a>
+        <a class="btn btn-success" th:href="@{/users}">Quản lý User</a>
+        <a class="btn btn-info" th:href="@{/videos}">Quản lý Video</a>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Video Form</title>
+</head>
+<body>
+	<h2 th:text="${video.id == null ? 'Thêm Video' : 'Cập nhật Video'}"></h2>
+
+	<form
+		th:action="@{${video.id == null ? '/videos/create' : '/videos/' + video.id}}"
+		th:object="${video}" method="post">
+
+		<label>Tiêu đề:</label> <input type="text" th:field="*{title}" /><br />
+
+		<label>Mô tả:</label>
+		<textarea th:field="*{description}"></textarea>
+		<br /> <label>Danh mục:</label> <select th:field="*{category}">
+			<option th:each="c : ${categories}" th:value="${c.id}"
+				th:text="${c.name}"></option>
+		</select><br /> <label>Hoạt động:</label> <input type="checkbox"
+			th:field="*{active}" /><br />
+
+		<button type="submit">Lưu</button>
+	</form>
+</body>
+</html>

@@ -3,7 +3,11 @@ package plat.dev.category.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import plat.dev.video.entity.Video;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -23,6 +27,9 @@ public class Category {
 	private Boolean active = true;
 
 	private LocalDateTime createdAt = LocalDateTime.now();
+	
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = false)
+	private List<Video> videos = new ArrayList<>();
 
 // getters & setters
 	public Long getId() {

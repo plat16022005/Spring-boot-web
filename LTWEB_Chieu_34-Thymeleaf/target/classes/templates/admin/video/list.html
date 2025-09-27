@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Quản lý Video</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Danh sách Video</h2>
+
+    <!-- Tìm kiếm -->
+    <form method="get" th:action="@{/admin/videos}">
+        <input type="text" name="q" placeholder="Tìm kiếm video..." th:value="${q}">
+        <button type="submit">🔍 Tìm</button>
+    </form>
+
+    <!-- Thêm mới -->
+    <a th:href="@{/admin/videos/create}">➕ Thêm Video</a>
+
+    <!-- Bảng danh sách -->
+    <table border="1" width="100%">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Mô tả</th>
+            <th>Đường dẫn</th>
+            <th>Danh mục</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="v : ${pageData.content}">
+            <td th:text="${v.id}"></td>
+            <td th:text="${v.title}"></td>
+            <td th:text="${v.description}"></td>
+            <td><a th:href="${v.url}" target="_blank">Xem</a></td>
+            <td th:text="${v.category.name}"></td>
+            <td th:text="${#temporals.format(v.createdAt,'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+                <a th:href="@{/admin/videos/{id}/edit(id=${v.id})}">✏ Sửa</a>
+                <form th:action="@{/admin/videos/{id}/delete(id=${v.id})}" method="post" style="display:inline">
+                    <button type="submit" onclick="return confirm('Xóa video này?')">🗑 Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div>
+        <span th:text="'Trang ' + ${pageData.number + 1} + '/' + ${pageData.totalPages}"></span>
+        <a th:if="${pageData.hasPrevious()}" th:href="@{/admin/videos(page=${pageData.number - 1}, q=${q})}">⬅ Trước</a>
+        <a th:if="${pageData.hasNext()}" th:href="@{/admin/videos(page=${pageData.number + 1}, q=${q})}">Sau ➡</a>
+    </div>
+</div>
+</body>
+</html>

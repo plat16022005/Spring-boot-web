@@ -3,6 +3,8 @@ package plat.dev.category.controller;
 import plat.dev.category.entity.Category;
 import plat.dev.category.service.CategoryService;
 import jakarta.validation.Valid;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,15 +24,18 @@ public class CategoryController {
 
 	// LIST + SEARCH + PAGINATION
 	@GetMapping
-	public String list(Model model, @RequestParam(value = "q", required = false) String q,
-			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "5") int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Category> pageData = service.search(q, pageable);
+	public String list(Model model,
+	                   @RequestParam(value = "q", required = false) String q,
+	                   @RequestParam(value = "page", defaultValue = "0") int page,
+	                   @RequestParam(value = "size", defaultValue = "5") int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    CategoryService categoryService = null;
+		@SuppressWarnings("null")
+		Page<Category> pageData = categoryService.search(q, pageable);
 
-		model.addAttribute("pageData", pageData);
-		model.addAttribute("q", q);
-		return "category/list"; // --> templates/category/list.html
+	    model.addAttribute("pageData", pageData);
+	    model.addAttribute("q", q);
+	    return "category/list"; // nhớ view tồn tại trong templates/category/list.html
 	}
 
 	// SHOW CREATE FORM

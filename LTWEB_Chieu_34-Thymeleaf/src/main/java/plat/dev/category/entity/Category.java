@@ -3,72 +3,35 @@ package plat.dev.category.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import plat.dev.video.entity.Video;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "categories")
 public class Category {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@NotBlank(message = "Tên không được để trống")
-	@Size(max = 100)
-	@Column(nullable = false, length = 100)
-	private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Size(max = 255)
-	private String description;
+    @NotBlank
+    @Size(min = 3, max = 100)
+    @Column(nullable = false, unique = true)
+    private String name;
 
-	private Boolean active = true;
+    private String icon;
 
-	private LocalDateTime createdAt = LocalDateTime.now();
-	
-	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = false)
-	private List<Video> videos = new ArrayList<>();
+    public Category() {}
 
-// getters & setters
-	public Long getId() {
-		return id;
-	}
+    public Category(Long id, String name, String icon) {
+        this.id = id;
+        this.name = name;
+        this.icon = icon;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
+    // Getter & Setter
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getIcon() { return icon; }
+    public void setIcon(String icon) { this.icon = icon; }
 }

@@ -1,23 +1,19 @@
 package plat.dev.category.service;
 
-import plat.dev.category.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import plat.dev.category.entity.Category;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
-	Page<Category> search(String keyword, Pageable pageable);
+    Page<Category> search(String q, Pageable pageable);
 
-	Page<Category> findAll(Pageable pageable);
-	
-    List<Category> findAll(); // ✅ thêm hàm này
+    Iterable<Category> findAll(Pageable pageable);
 
-	Optional<Category> findById(Long id);
+    Optional<Category> findById(Long id);
 
-	Category save(Category c);
+    Category save(Category category);
 
-	void deleteById(Long id);
-	
+    void deleteById(Long id);
 }

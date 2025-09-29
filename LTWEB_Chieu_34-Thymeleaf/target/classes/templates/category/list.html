@@ -1,95 +1,51 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/base}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Danh sách Category</title>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-	<section layout:fragment="content">
+<h2>Danh sách Category</h2>
+<table border="1">
+    <thead>
+        <tr><th>ID</th><th>Name</th><th>Icon</th><th>Action</th></tr>
+    </thead>
+    <tbody id="categoryTable"></tbody>
+</table>
 
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h2 class="h4 mb-0">Danh sách Category</h2>
-			<a class="btn btn-primary" th:href="@{/categories/create}">+ Thêm
-				mới</a>
-		</div>
+<script>
+$(document).ready(function(){
+    loadCategories();
+});
 
-		<form class="row g-2 mb-3" method="get" th:action="@{/categories}">
-			<div class="col-sm-8 col-md-6">
-				<input class="form-control" type="text" name="q"
-					placeholder="Tìm theo tên..." th:value="${q}">
-			</div>
-			<div class="col-auto">
-				<button class="btn btn-outline-secondary" type="submit">Tìm</button>
-			</div>
-		</form>
+function loadCategories(){
+    $.getJSON("/api/categories", function(page){
+        let rows = "";
+        page.content.forEach(function(c){
+            rows += `<tr>
+                        <td>${c.id}</td>
+                        <td>${c.name}</td>
+                        <td>${c.icon ?? ''}</td>
+                        <td>
+                            <button onclick="deleteCategory(${c.id})">Xóa</button>
+                        </td>
+                     </tr>`;
+        });
+        $("#categoryTable").html(rows);
+    });
+}
 
-		<div th:if="${message}" class="alert alert-success"
-			th:text="${message}"></div>
-
-		<div class="table-responsive">
-			<table class="table table-striped align-middle">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Tên</th>
-						<th>Mô tả</th>
-						<th>Trạng thái</th>
-						<th>Ngày tạo</th>
-						<th class="text-end">Hành động</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="item, stat : ${pageData}">
-						<td th:text="${stat.index + 1 + pageData.number * pageData.size}"></td>
-						<td th:text="${item.name}"></td>
-						<td th:text="${item.description}"></td>
-						<td><span th:text="${item.active} ? 'Active' : 'Inactive'"
-							class="badge text-bg-light"></span></td>
-						<td
-							th:text="${#temporals.format(item.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
-						<td class="text-end">
-							<div class="btn-group">
-								<a class="btn btn-sm btn-outline-primary"
-									th:href="@{'/categories/' + ${item.id} + '/edit'}">Sửa</a>
-								<form th:action="@{'/categories/' + ${item.id} + '/delete'}"
-									method="post" onsubmit="return confirm('Xác nhận xoá?')">
-									<button class="btn btn-sm btn-outline-danger" type="submit">Xoá</button>
-								</form>
-							</div>
-						</td>
-					</tr>
-					<tr th:if="${pageData.totalElements == 0}">
-						<td colspan="6" class="text-center text-muted">Không có dữ
-							liệu.</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<!-- PAGINATION -->
-		<nav th:if="${pageData.totalPages > 1}" aria-label="Pagination">
-			<ul class="pagination">
-				<li class="page-item"
-					th:classappend="${pageData.first} ? 'disabled'"><a
-					class="page-link"
-					th:href="@{/categories(page=${pageData.number - 1}, size=${pageData.size}, q=${q})}">«</a>
-				</li>
-
-				<li class="page-item"
-					th:each="i : ${#numbers.sequence(0, pageData.totalPages - 1)}"
-					th:classappend="${i == pageData.number} ? 'active'"><a
-					class="page-link"
-					th:href="@{/categories(page=${i}, size=${pageData.size}, q=${q})}"
-					th:text="${i + 1}"></a></li>
-
-				<li class="page-item" th:classappend="${pageData.last} ? 'disabled'">
-					<a class="page-link"
-					th:href="@{/categories(page=${pageData.number + 1}, size=${pageData.size}, q=${q})}">»</a>
-				</li>
-			</ul>
-		</nav>
-
-	</section>
+function deleteCategory(id){
+    $.ajax({
+        url: "/api/categories/" + id,
+        type: "DELETE",
+        success: function(){
+            alert("Đã xóa!");
+            loadCategories();
+        }
+    });
+}
+</script>
 </body>
 </html>
